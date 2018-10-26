@@ -22,7 +22,7 @@ export default Attack;
 
 export const attack = (attacker: Character, target: Character): Attack => {
     const action: BaseAttack = {attacker, target, type: 'ATTACK'};
-    if (!rollForHit()) {
+    if (!rollForHit(attacker)) {
         return {...action, hit: false};
     }
     const damage = calculateAttackDamage(action.attacker);
