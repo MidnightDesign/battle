@@ -10,9 +10,10 @@ interface StateProps {
 type CharactersProps = StateProps;
 
 export const Characters = ({characters}: CharactersProps) => {
-    const rows = characters.map(({id, hp, maxHp}) => (
+    const rows = characters.map(({id, hp, maxHp, name}) => (
         <tr key={id}>
             <td>{id}</td>
+            <td>{name}</td>
             <td>{hp}/{maxHp}</td>
         </tr>
     ));
@@ -21,6 +22,7 @@ export const Characters = ({characters}: CharactersProps) => {
             <thead>
             <tr>
                 <th>ID</th>
+                <th>Name</th>
                 <th>HP</th>
             </tr>
             </thead>

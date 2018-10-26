@@ -20,9 +20,14 @@ const modifyCharacter = (
 
 const charactersReducer: Reducer<State['characters'], Action> = (characters = [], action) => {
     const modify = (character: Character, mofifier: Modifier) => modifyCharacter(characters, character, mofifier);
+    const cooldown = (character: Character): Character => {
+        const cooldownEnd = new Date();
+        cooldownEnd.setTime(cooldownEnd.getTime() + 1000);
+        return ({...character, cooldownEnd});
+    };
     switch (action.type) {
         case 'ATTACK':
-            return modify(action.target, (character) => {
+            const targetDamaged = modify(action.target, (character) => {
                 if (!action.hit) {
                     return character;
                 }
@@ -30,16 +35,18 @@ const charactersReducer: Reducer<State['characters'], Action> = (characters = []
                 if (isDead({hp: newHp})) {
                     newHp = 0;
                 }
-                return ({...character, hp: newHp});
+                return {...character, hp: newHp};
             });
+            return modifyCharacter(targetDamaged, action.attacker, cooldown);
         case 'HEAL':
-            return modify(action.target, (character) => {
+            const targetHealed = modify(action.target, (character) => {
                 let newHp = character.hp + 10;
                 if (newHp > character.maxHp) {
                     newHp = character.maxHp;
                 }
-                return ({...character, hp: newHp});
+                return cooldown({...character, hp: newHp});
             });
+            return modifyCharacter(targetHealed, action.healer, cooldown);
         case 'SPAWN':
             return [...characters, action.character];
     }

@@ -1,7 +1,7 @@
 import Character from '../../model/Character';
 import {attack} from './Attack';
 
-const baseCharacter = {hp: 100, maxHp: 100};
+const baseCharacter = {hp: 100, maxHp: 100, cooldownEnd: undefined};
 
 describe('attack', () => {
     it(`returns a non-hit action if the hit roll doesn't succeed`, () => {
