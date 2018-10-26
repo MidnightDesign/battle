@@ -4,6 +4,7 @@ import {connect, MapDispatchToProps} from 'react-redux';
 import Character, {isCoolingDown, isDead} from '../../model/Character';
 import {attack} from '../../redux/actions/Attack';
 import {heal} from '../../redux/actions/Heal';
+import Button from '../Button/Button';
 
 interface OwnProps {
     character: Character;
@@ -27,8 +28,8 @@ export class Actions extends Component<ActionsProps, ActionState> {
     public render() {
         return (
             <>
-                <button onClick={this.handleAttackClick} disabled={!this.state.canAttack}>Attack</button>
-                <button onClick={this.handleHealClick}>Heal</button>
+                <Button onClick={this.handleAttackClick} disabled={!this.state.canAttack}>Attack</Button>
+                <Button onClick={this.handleHealClick}>Heal</Button>
             </>
         );
     }

@@ -1,0 +1,20 @@
+.Button {
+    --background-color: #d32f2f;
+    font-family: inherit;
+    background-color: var(--background-color);
+    color: white;
+    font-size: inherit;
+    height: 48px;
+    border: solid 2px black;
+    padding: 0 24px;
+    transition: filter .2s, background-color .2s;
+}
+
+.Button:focus {
+    --background-color: #9a0007;
+    outline: none;
+}
+
+.Button:disabled {
+    filter: grayscale(1);
+}

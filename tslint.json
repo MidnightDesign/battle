@@ -11,7 +11,8 @@
         },
         "quotemark": {
             "options": [
-                "single"
+                "single",
+                "jsx-double"
             ]
         }
     },

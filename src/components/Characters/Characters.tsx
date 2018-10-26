@@ -2,6 +2,7 @@ import * as React from 'react';
 import {connect, MapStateToProps} from 'react-redux';
 import Character from '../../model/Character';
 import State from '../../redux/state/State';
+import Meter from '../Meter/Meter';
 
 interface StateProps {
     characters: Character[];
@@ -14,7 +15,7 @@ export const Characters = ({characters}: CharactersProps) => {
         <tr key={id}>
             <td>{id}</td>
             <td>{name}</td>
-            <td>{hp}/{maxHp}</td>
+            <td><Meter value={hp} max={maxHp}/></td>
         </tr>
     ));
     return (

@@ -1,0 +1,36 @@
+.Meter {
+    --bar-color: #d32f2f;
+    --background-color: #ffebee;
+    --percentage: 100;
+    border: solid 2px #333;
+    -webkit-appearance: none;
+    display: flex;
+    border-radius: 2px;
+    background-color: var(--background-color);
+    position: relative;
+}
+
+.Meter:not(:hover) .label {
+    display: none;
+}
+
+.Meter:hover .label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    cursor: default;
+    font-weight: bold;
+}
+
+.Meter::after {
+    content: '';
+    display: block;
+    background-color: var(--bar-color);
+    width: calc(var(--percentage) * 1%);
+}

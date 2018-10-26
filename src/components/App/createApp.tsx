@@ -8,11 +8,11 @@ import App from './App';
 export default () => {
     const store = createStore();
     const hero: Character = {
-        attackPower: 5,
+        attackPower: 200,
         cooldownEnd: undefined,
-        hp: 50,
+        hp: 1_000,
         id: 'foo',
-        maxHp: 100,
+        maxHp: 1_000,
         name: 'Gyros',
         precision: 90,
     };
@@ -20,9 +20,9 @@ export default () => {
     const monster: Character = {
         attackPower: 2,
         cooldownEnd: undefined,
-        hp: 100,
+        hp: 1_000,
         id: 'bar',
-        maxHp: 100,
+        maxHp: 1_000,
         name: 'Murloc',
         precision: 90,
     };

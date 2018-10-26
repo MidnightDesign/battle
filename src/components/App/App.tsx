@@ -5,6 +5,7 @@ import State from '../../redux/state/State';
 import Actions from '../Actions/Actions';
 import BattleLog from '../BattleLog/BattleLog';
 import Characters from '../Characters/Characters';
+import './App.css';
 
 interface StateProps {
     hero: Character;
@@ -16,11 +17,11 @@ type AppProps = StateProps;
 class App extends React.Component<AppProps> {
     public render() {
         return (
-            <>
+            <div className="App">
                 <Characters/>
                 <Actions character={this.props.hero} target={this.props.monster}/>
                 <BattleLog/>
-            </>
+            </div>
         );
     }
 }
