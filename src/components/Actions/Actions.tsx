@@ -54,7 +54,7 @@ export class Actions extends Component<ActionsProps, ActionState> {
         this.setState({canAttack: false});
     }
 
-    private handleHealClick = () => this.props.heal(this.props.character, this.props.target);
+    private handleHealClick = () => this.props.heal(this.props.character, this.props.character);
 }
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = ({
