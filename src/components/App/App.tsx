@@ -16,7 +16,7 @@ class App extends React.Component<AppProps> {
     public render() {
         return (
             <div className="App">
-                <Combat hero={this.props.hero} monsters={[this.props.monster]}/>
+                <Combat hero={this.props.hero} monsters={[this.props.monster]} className="combat"/>
             </div>
         );
     }

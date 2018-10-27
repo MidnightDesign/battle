@@ -1,0 +1,15 @@
+.ActionBar {
+    display: flex;
+    list-style: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 2px;
+}
+
+.ActionBar .action:not(:first-child) {
+    margin-left: 2px;
+}
+
+.ActionBar.cooling-down .Button {
+    --background-color: #fbc02d;
+}

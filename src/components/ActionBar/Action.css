@@ -1,0 +1,38 @@
+.Action {
+    width: 60px;
+    height: 60px;
+    display: grid;
+    grid-template-columns: 1fr [shortcut-start] auto [shortcut-end];
+    grid-template-rows: [shortcut-start] auto [shortcut-end] 1fr;
+    border: solid 2px #222;
+    border-radius: 2px;
+    background-color: #808080;
+}
+
+.Action.disabled {
+    opacity: .54;
+}
+
+.Action button {
+    padding: 0;
+    display: contents;
+    background: none;
+    border: none;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.Action .shortcut {
+    grid-area: shortcut;
+    color: white;
+    text-shadow: 0 0 1px black;
+    z-index: 20;
+    line-height: 1;
+    padding: 4px;
+}
+
+.Action .icon {
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    z-index: 10;
+}

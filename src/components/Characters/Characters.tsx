@@ -6,6 +6,7 @@ import './Characters.css';
 interface OwnProps {
     selected: Character | undefined;
     onSelect: (character: Character) => void;
+    className?: string;
 }
 
 interface StateProps {
@@ -14,7 +15,7 @@ interface StateProps {
 
 type CharactersProps = OwnProps & StateProps;
 
-export default ({characters, selected, onSelect}: CharactersProps) => {
+export default ({characters, selected, onSelect, className}: CharactersProps) => {
     const rows = characters.map((character) => {
         const {id, hp, maxHp, name} = character;
         const handleClick = () => onSelect(character);
@@ -29,7 +30,7 @@ export default ({characters, selected, onSelect}: CharactersProps) => {
         );
     });
     return (
-        <table className="Characters">
+        <table className={['Characters', className].join(' ')}>
             <thead>
             <tr>
                 <th>ID</th>

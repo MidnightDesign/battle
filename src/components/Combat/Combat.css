@@ -1,0 +1,17 @@
+.Combat {
+    display: grid;
+    grid-template-columns: [characters-start log-start] 1fr [action-bar-start] auto [action-bar-end] 1fr [log-end characters-end];
+    grid-template-rows: [characters-start] auto [characters-end log-start] 1fr [log-end action-bar-start] auto [action-bar-end];
+}
+
+.Combat .characters {
+    grid-area: characters;
+}
+
+.Combat .action-bar {
+    grid-area: action-bar;
+}
+
+.Combat .combat-log {
+    grid-area: log;
+}
