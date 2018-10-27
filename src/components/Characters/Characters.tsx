@@ -1,25 +1,34 @@
 import * as React from 'react';
-import {connect, MapStateToProps} from 'react-redux';
 import Character from '../../model/Character';
-import State from '../../redux/state/State';
 import Meter from '../Meter/Meter';
+import './Characters.css';
+
+interface OwnProps {
+    selected: Character | undefined;
+    onSelect: (character: Character) => void;
+}
 
 interface StateProps {
     characters: Character[];
 }
 
-type CharactersProps = StateProps;
+type CharactersProps = OwnProps & StateProps;
 
-export const Characters = ({characters}: CharactersProps) => {
-    const rows = characters.map(({id, hp, maxHp, name}) => (
-        <tr key={id}>
-            <td>{id}</td>
-            <td>{name}</td>
-            <td><Meter value={hp} max={maxHp}/></td>
-        </tr>
-    ));
+export default ({characters, selected, onSelect}: CharactersProps) => {
+    const rows = characters.map((character) => {
+        const {id, hp, maxHp, name} = character;
+        const handleClick = () => onSelect(character);
+        const classNames = [selected === character ? 'selected' : undefined];
+        return (
+            <tr key={id} onClick={handleClick} className={classNames.join(' ')}>
+                <td>{id}</td>
+                <td>{name}</td>
+                <td><Meter value={hp} max={maxHp}/></td>
+            </tr>
+        );
+    });
     return (
-        <table>
+        <table className="Characters">
             <thead>
             <tr>
                 <th>ID</th>
@@ -33,7 +42,3 @@ export const Characters = ({characters}: CharactersProps) => {
         </table>
     );
 };
-
-const mapStateToProps: MapStateToProps<StateProps, {}, State> = ({characters}) => ({characters});
-
-export default connect(mapStateToProps)(Characters);

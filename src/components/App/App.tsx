@@ -2,9 +2,7 @@ import * as React from 'react';
 import {connect, MapStateToProps} from 'react-redux';
 import Character from '../../model/Character';
 import State from '../../redux/state/State';
-import Actions from '../Actions/Actions';
-import BattleLog from '../BattleLog/BattleLog';
-import Characters from '../Characters/Characters';
+import Combat from '../Combat/Combat';
 import './App.css';
 
 interface StateProps {
@@ -18,9 +16,7 @@ class App extends React.Component<AppProps> {
     public render() {
         return (
             <div className="App">
-                <Characters/>
-                <Actions character={this.props.hero} target={this.props.monster}/>
-                <BattleLog/>
+                <Combat hero={this.props.hero} monsters={[this.props.monster]}/>
             </div>
         );
     }

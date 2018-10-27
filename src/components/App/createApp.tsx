@@ -15,6 +15,7 @@ export default () => {
         maxHp: 1_000,
         name: 'Gyros',
         precision: 90,
+        scheduledAction: undefined,
     };
     store.dispatch(spawn(hero));
     const monster: Character = {
@@ -25,6 +26,7 @@ export default () => {
         maxHp: 1_000,
         name: 'Murloc',
         precision: 90,
+        scheduledAction: undefined,
     };
     store.dispatch(spawn(monster));
     return (

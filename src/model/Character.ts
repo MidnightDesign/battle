@@ -1,3 +1,5 @@
+import {SchedulableAction} from '../redux/actions/ScheduleAction';
+
 export default interface Character {
     readonly id: string;
     readonly name: string;
@@ -6,6 +8,7 @@ export default interface Character {
     readonly attackPower: number;
     readonly precision: number;
     readonly cooldownEnd: Date | undefined;
+    readonly scheduledAction: SchedulableAction | undefined;
 }
 
 export const isDead = ({hp}: Pick<Character, 'hp'>) => hp < 1;
