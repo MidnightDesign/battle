@@ -2,14 +2,12 @@ import {Reducer} from 'redux';
 import Character, {isDead} from '../../model/Character';
 import Attack from '../actions/Attack';
 import Heal from '../actions/Heal';
-import ScheduleAction from '../actions/ScheduleAction';
 import Spawn from '../actions/Spawn';
 import State from '../state/State';
 
 type Action =
     Attack |
     Heal |
-    ScheduleAction|
     Spawn;
 
 type Modifier = (character: Character) => Character;
@@ -49,8 +47,6 @@ const charactersReducer: Reducer<State['characters'], Action> = (characters = []
                 return cooldown({...character, hp: newHp});
             });
             return modifyCharacter(targetHealed, action.healer, cooldown);
-        case 'SCHEDULE_ACTION':
-            return modify(action.character, (character) => ({...character, scheduledAction: action.action}));
         case 'SPAWN':
             return [...characters, action.character];
     }

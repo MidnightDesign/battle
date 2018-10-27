@@ -15,9 +15,13 @@ const battleLogReducer: Reducer<State['battleLog'], Action> = (log = [], action)
             const attackerName = action.attacker.name;
             const targetName = action.target.name;
             const text = action.hit
-                ? `${attackerName} attacked ${targetName} and did ${action.damage} damage`
-                : `${attackerName} attacked ${targetName} and missed`;
-            return add(text);
+                ? `${attackerName} attacks ${targetName} and does ${action.damage} damage`
+                : `${attackerName} attacks ${targetName} and misses`;
+            let state = add(text);
+            if (action.hit && action.damage > action.target.hp) {
+                state = addEntry(state, `${targetName} dies`);
+            }
+            return state;
     }
     return log;
 };

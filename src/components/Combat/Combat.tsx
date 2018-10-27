@@ -4,21 +4,23 @@ import Actions from '../Actions/Actions';
 import BattleLog from '../BattleLog/BattleLog';
 import Characters from '../Characters/Characters';
 
-interface CombatProps {
+interface OwnProps {
     hero: Character;
     monsters: Character[];
 }
 
+type CombatProps = OwnProps;
+
 interface CombatState {
-    target: Character | undefined;
+    targetId: string | undefined;
 }
 
 class Combat extends React.Component<CombatProps, CombatState> {
-    public state: CombatState = {target: undefined};
+    public state: CombatState = {targetId: undefined};
 
     public render() {
         const {hero, monsters} = this.props;
-        const {target} = this.state;
+        const target = this.getTarget();
         return (
             <>
                 <Characters characters={[hero, ...monsters]} selected={target} onSelect={this.handleCharacterSelect}/>
@@ -28,7 +30,15 @@ class Combat extends React.Component<CombatProps, CombatState> {
         );
     }
 
-    private handleCharacterSelect = (character: Character) => this.setState({target: character});
+    private handleCharacterSelect = (character: Character) => this.setState({targetId: character.id});
+
+    private getTarget() {
+        const {targetId} = this.state;
+        if (targetId === undefined) {
+            return undefined;
+        }
+        return [this.props.hero, ...this.props.monsters].find(({id}) => targetId === id) || undefined;
+    }
 }
 
 export default Combat;

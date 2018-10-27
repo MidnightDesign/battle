@@ -4,7 +4,6 @@ import {connect, MapDispatchToProps} from 'react-redux';
 import Character, {isCoolingDown, isDead} from '../../model/Character';
 import {attack} from '../../redux/actions/Attack';
 import {heal} from '../../redux/actions/Heal';
-import {scheduleAction} from '../../redux/actions/ScheduleAction';
 import Button from '../Button/Button';
 import './Actions.css';
 
@@ -16,17 +15,17 @@ interface OwnProps {
 interface DispatchProps {
     attack: typeof attack;
     heal: typeof heal;
-    scheduleAction: typeof scheduleAction;
 }
 
 type ActionsProps = OwnProps & DispatchProps;
 
 interface ActionState {
     canAttack: boolean;
+    scheduledAction: (() => void) | undefined;
 }
 
 export class Actions extends Component<ActionsProps, ActionState> {
-    public state: ActionState = {canAttack: false};
+    public state: ActionState = {canAttack: false, scheduledAction: undefined};
 
     public render() {
         const classNames = ['Actions'];
@@ -42,15 +41,19 @@ export class Actions extends Component<ActionsProps, ActionState> {
     }
 
     public componentDidMount() {
-        this.scheduleStateUpdate();
+        this.scheduleTick();
     }
 
-    private scheduleStateUpdate = () => setTimeout(() => this.updateState(), 15);
+    private scheduleTick = () => setTimeout(() => this.tick(), 15);
 
-    private updateState = () => {
+    private tick = () => {
         const canAttack = !isDead(this.props.target);
         this.setState({canAttack});
-        this.scheduleStateUpdate();
+        if (this.state.scheduledAction !== undefined && !isCoolingDown(this.props.character)) {
+            this.state.scheduledAction();
+            this.setState({scheduledAction: undefined});
+        }
+        this.scheduleTick();
     }
 
     private handleAttackClick = () => {
@@ -59,7 +62,7 @@ export class Actions extends Component<ActionsProps, ActionState> {
             return;
         }
         if (isCoolingDown(character)) {
-            this.props.scheduleAction(character, attack(character, target));
+            this.scheduleAction(() => this.props.attack(character, target));
             return;
         }
         this.props.attack(character, target);
@@ -67,12 +70,15 @@ export class Actions extends Component<ActionsProps, ActionState> {
     }
 
     private handleHealClick = () => this.props.heal(this.props.character, this.props.character);
+
+    private scheduleAction(action: () => void) {
+        this.setState({scheduledAction: action});
+    }
 }
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = ({
     attack,
     heal,
-    scheduleAction,
 });
 
 export default connect(undefined, mapDispatchToProps)(Actions);
