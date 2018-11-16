@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {connect, MapStateToProps} from 'react-redux';
+import { connect, MapStateToProps } from 'react-redux';
 import BattleLogEntry from '../../model/BattleLogEntry';
-import State from '../../redux/state/State';
+import AppState from '../../redux/state/AppState';
 
 interface OwnProps {
     className?: string;
@@ -19,6 +19,6 @@ const CombatLog = ({entries, className}: CombatLogProps) => (
     </ul>
 );
 
-const mapStateToProps: MapStateToProps<StateProps, {}, State> = ({battleLog}) => ({entries: battleLog});
+const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = () => ({entries: []});
 
 export default connect(mapStateToProps)(CombatLog);

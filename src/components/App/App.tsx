@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {connect, MapStateToProps} from 'react-redux';
+import { connect, MapStateToProps } from 'react-redux';
 import Character from '../../model/Character';
-import State from '../../redux/state/State';
+import AppState from '../../redux/state/AppState';
 import Combat from '../Combat/Combat';
 import './App.css';
 
@@ -16,13 +16,17 @@ class App extends React.Component<AppProps> {
     public render() {
         return (
             <div className="App">
-                <Combat hero={this.props.hero} monsters={[this.props.monster]} className="combat"/>
+                <Combat
+                    hero={this.props.hero}
+                    monsters={[this.props.monster]}
+                    className="combat"
+                />
             </div>
         );
     }
 }
 
-const mapStateToProps: MapStateToProps<StateProps, {}, State> = ({characters}) => ({
+const mapStateToProps: MapStateToProps<StateProps, {}, AppState> = ({characters}) => ({
     hero: characters[0],
     monster: characters[1],
 });

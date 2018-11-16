@@ -1,12 +1,11 @@
 import * as React from 'react';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import Character from '../../model/Character';
-import {spawn} from '../../redux/actions/Spawn';
-import createStore from '../../redux/createStore';
+import { spawn } from '../../redux/actions/Spawn';
+import { store } from '../../redux/store';
 import App from './App';
 
 export default () => {
-    const store = createStore();
     const hero: Character = {
         attackPower: 200,
         cooldownEnd: undefined,

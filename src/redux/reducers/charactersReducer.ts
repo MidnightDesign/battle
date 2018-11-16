@@ -1,52 +1,42 @@
-import {Reducer} from 'redux';
-import Character, {isDead} from '../../model/Character';
-import Attack from '../actions/Attack';
-import Heal from '../actions/Heal';
-import Spawn from '../actions/Spawn';
-import State from '../state/State';
+import { Reducer } from 'redux';
+import Character from '../../model/Character';
+import { addUntil, subtractUntil } from '../../util/math';
+import { AppAction } from '../actions/actions';
+import AppState from '../state/AppState';
 
-type Action =
-    Attack |
-    Heal |
-    Spawn;
-
+type CharactersState = AppState['characters'];
 type Modifier = (character: Character) => Character;
-
 const modifyCharacter = (
-    characters: Character[],
+    characters: CharactersState,
     character: Character,
     modifier: Modifier,
-) => characters.map((current) => current.id !== character.id ? current : modifier(current));
+): CharactersState => {
+    return characters.map((current) => {
+        if (current.id !== character.id) {
+            return current;
+        }
 
-const charactersReducer: Reducer<State['characters'], Action> = (characters = [], action) => {
-    const modify = (character: Character, mofifier: Modifier) => modifyCharacter(characters, character, mofifier);
-    const cooldown = (character: Character): Character => {
-        const cooldownEnd = new Date();
-        cooldownEnd.setTime(cooldownEnd.getTime() + 1000);
-        return ({...character, cooldownEnd});
-    };
+        return modifier(current);
+    });
+};
+
+const charactersReducer: Reducer<CharactersState, AppAction> = (characters = [], action) => {
+    const modify = (character: Character, modifier: Modifier) => modifyCharacter(characters, character, modifier);
     switch (action.type) {
-        case 'ATTACK':
-            const targetDamaged = modify(action.target, (character) => {
-                if (!action.hit) {
-                    return character;
-                }
-                let newHp = character.hp - action.damage;
-                if (isDead({hp: newHp})) {
-                    newHp = 0;
-                }
-                return {...character, hp: newHp};
-            });
-            return modifyCharacter(targetDamaged, action.attacker, cooldown);
-        case 'HEAL':
-            const targetHealed = modify(action.target, (character) => {
-                let newHp = character.hp + 10;
-                if (newHp > character.maxHp) {
-                    newHp = character.maxHp;
-                }
-                return cooldown({...character, hp: newHp});
-            });
-            return modifyCharacter(targetHealed, action.healer, cooldown);
+        case 'DAMAGE_CHARACTER':
+            return modify(action.character, (character) => ({
+                ...character,
+                hp: subtractUntil(character.hp, action.damage, 0),
+            }));
+        case 'HEAL_CHARACTER':
+            return modify(action.character, (character) => ({
+                ...character,
+                hp: addUntil(character.hp, action.hp, character.maxHp),
+            }));
+        case 'START_COOLDOWN':
+            const cooldownEnd = new Date();
+            cooldownEnd.setTime(cooldownEnd.getTime() + 1000);
+            return modify(action.character, (character) => ({...character, cooldownEnd}));
         case 'SPAWN':
             return [...characters, action.character];
     }

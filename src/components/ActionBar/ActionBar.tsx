@@ -1,9 +1,8 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {connect, MapDispatchToProps} from 'react-redux';
-import Character, {isCoolingDown, isDead} from '../../model/Character';
-import {attack} from '../../redux/actions/Attack';
-import {heal} from '../../redux/actions/Heal';
+import { Component } from 'react';
+import { attack } from '../../commands/attack';
+import { heal } from '../../commands/heal';
+import Character, { isCoolingDown, isDead } from '../../model/Character';
 import Action from './Action';
 import './ActionBar.css';
 import MeleeDamage from './MeleeDamage.png';
@@ -14,12 +13,7 @@ interface OwnProps {
     className?: string;
 }
 
-interface DispatchProps {
-    attack: typeof attack;
-    heal: typeof heal;
-}
-
-type ActionBarProps = OwnProps & DispatchProps;
+type ActionBarProps = OwnProps;
 
 interface ActionBarState {
     canAttack: boolean;
@@ -71,7 +65,7 @@ export class ActionBar extends Component<ActionBarProps, ActionBarState> {
     private tick = () => {
         this.setState((state) => {
             const {target} = this.props;
-            const canAttack = target !== undefined && !isDead(target);
+            const canAttack = target !== undefined && !isDead(target) && !isCoolingDown(this.props.character);
             if (this.state.canAttack !== canAttack) {
                 return {...state, canAttack};
             }
@@ -96,23 +90,18 @@ export class ActionBar extends Component<ActionBarProps, ActionBarState> {
             return;
         }
         if (isCoolingDown(character)) {
-            this.scheduleAction(() => this.props.attack(character, target));
+            this.scheduleAction(() => attack(character, target));
             return;
         }
-        this.props.attack(character, target);
+        attack(character, target);
         this.setState({canAttack: false});
     }
 
-    private handleHealClick = () => this.props.heal(this.props.character, this.props.character);
+    private handleHealClick = () => heal(this.props.character, this.props.character);
 
     private scheduleAction(action: () => void) {
         this.setState({scheduledAction: action});
     }
 }
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = ({
-    attack,
-    heal,
-});
-
-export default connect(undefined, mapDispatchToProps)(ActionBar);
+export default ActionBar;
